@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery - Atharva Shinde</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .gallery-modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; }
+    .gallery-modal.active { display:flex; }
+    .gallery-modal img, .gallery-modal video { max-width:90vw; max-height:80vh; border-radius:1rem; box-shadow:0 8px 32px #000a; }
+    .gallery-modal .close-btn { position:absolute; top:2rem; right:2rem; background:#fff; color:#222; border:none; border-radius:50%; font-size:2rem; width:2.5rem; height:2.5rem; cursor:pointer; box-shadow:0 2px 8px #0003; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Research Gallery</h1>
+      <p class="hero-subtitle">A glimpse into my research & science journey</p>
+      <div class="hero-actions">
+        <a href="index.html" class="btn secondary">Back to Resume</a>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="section fade-in">
+      <h1>Research Gallery</h1>
+      <h3>The data and images shown below reflect my hands-on contribution to the techniques I implemented in my master's thesis at Centenary Institute where I played a key role in experimental design, execution, and interpretation. Due to data privacy and protection, images are not described in depth. The rights to these images belong to the CanGER lab at Centenary Institute, Sydney.</h3>
+      <div class="container">
+        <h2>Bioinformatics</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item" data-caption="I established and developed an interactive and novel transcription factor (TF) regulatory network analysis to help visualize how TF from differentially expressed genes (DEGs) regulate other DEGs. Down regulated genes (Blue); Up regulated genes (red); Size represents Fold change.">
+            <img src="CHEA.jpg" alt="CHEA network">
+            <p>TF regulatory network analysis</p>
+          </div>
+          <div class="gallery-item" data-caption="I coined and pioneered the 'COVERT' analysis (Chromosome Observation and Visualization of Enriched RNA Transcripts) where DEGs are clustered based on genomic distance and fold change with clustering algorithm.">
+            <img src="Kary.jpg" alt="COVERT analysis">
+            <p>COVERT analysis</p>
+          </div>
+          <div class="gallery-item" data-caption="A Zoomed in view of the COVERT analysis">
+            <img src="Kary_zoom.jpg" alt="COVERT zoom">
+            <p>COVERT analysis (zoomed in)</p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="gallery-grid">
+          <div class="gallery-item" data-caption="Pathway analysis of DEGs with the help of iDEP portal">
+            <img src="Pathway.jpg" alt="Pathway analysis">
+            <p>Pathway analysis of DEGs</p>
+          </div>
+          <div class="gallery-item" data-caption="Gene set enrichment analysis">
+            <img src="GSEA.jpg" alt="GSEA">
+            <p>Gene set enrichment analysis</p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <h2>Microscopy</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item" data-caption="A 3D render on mouse E13.5 forelimb vascular structure. Click on image to play">
+            <video src="1.het.hindlimb.mp4" controls poster="" style="width: 100%; max-width: 600px;"></video>
+            <p>3D render on mouse E13.5 forelimb vascular structure</p>
+          </div>
+          <div class="gallery-item" data-caption="Immunohistochemistry on E13.5 mouse embryo cryosection">
+            <img src="Project001_CD31 CPD WT2 hyd Merged.tif (red).jpg" alt="IHC on E13.5 mouse embryo">
+            <p>Immunohistochemistry on E13.5 mouse embryo cryosection</p>
+          </div>
+          <div class="gallery-item" data-caption="Whole mount staining of E18.5 mouse skin">
+            <img src="skin.jpg" alt="Whole mount staining">
+            <p>Whole mount staining of E18.5 mouse skin</p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <h2>Micro-Dissection and Mice handling</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item" data-caption="E13.5 Mouse Embryo">
+            <img src="embryo.jpg" alt="E13.5 Mouse Embryo">
+            <p>E13.5 Mouse Embryo</p>
+          </div>
+          <div class="gallery-item" data-caption="E13.5 Mouse Embryo Heart">
+            <img src="Heart.jpg" alt="E13.5 Mouse Embryo Heart">
+            <p>E13.5 Mouse Embryo Heart</p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <h2>Flow cytometry</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item" data-caption="Flow cytometry analysis">
+            <img src="fow.jpg" alt="Flow cytometry">
+            <p>Flow cytometry analysis</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div class="gallery-modal" id="galleryModal">
+    <button class="close-btn" id="closeModal">&times;</button>
+    <img id="modalImg" src="" alt="" style="display:none;" />
+    <video id="modalVideo" src="" controls style="display:none;"></video>
+    <div id="modalCaption" style="color:#fff; text-align:center; margin-top:1rem; font-size:1.2rem;"></div>
+  </div>
+  <script>
+    // Modal gallery logic
+    const modal = document.getElementById('galleryModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalCaption = document.getElementById('modalCaption');
+    document.querySelectorAll('.gallery-item img, .gallery-item video').forEach(media => {
+      media.addEventListener('click', function(e) {
+        e.preventDefault();
+        modal.classList.add('active');
+        if (this.tagName === 'IMG') {
+          modalImg.src = this.src;
+          modalImg.style.display = '';
+          modalVideo.style.display = 'none';
+          modalVideo.pause();
+        } else if (this.tagName === 'VIDEO') {
+          modalVideo.src = this.src;
+          modalVideo.style.display = '';
+          modalImg.style.display = 'none';
+          modalVideo.play();
+        }
+        modalCaption.textContent = this.closest('.gallery-item').getAttribute('data-caption');
+      });
+    });
+    document.getElementById('closeModal').onclick = function() {
+      modal.classList.remove('active');
+      modalImg.src = '';
+      modalVideo.src = '';
+      modalCaption.textContent = '';
+      modalVideo.pause();
+    };
+    modal.onclick = function(e) {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        modalImg.src = '';
+        modalVideo.src = '';
+        modalCaption.textContent = '';
+        modalVideo.pause();
+      }
+    };
+  </script>
+  <footer>
+    <p>&copy; 2024 Atharva Shinde. All Rights Reserved.</p>
+  </footer>
+</body>
+</html> 
